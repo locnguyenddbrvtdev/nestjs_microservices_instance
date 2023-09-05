@@ -22,6 +22,12 @@ export class AppConfigService {
     return +this.configService.get(`${this.thisService()}_HTTP_PORT`);
   }
 
+  getThisSecrectAccessToken(): string {
+    return this.configService.get<string>(
+      `${this.thisService()}_SECRECT_ACCESS_TOKEN`,
+    );
+  }
+
   getServiceTCPPort(service: SERVICE_LIST): number {
     return +this.configService.get(`${service}_TCP_PORT`);
   }

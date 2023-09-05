@@ -21,13 +21,9 @@
       "@config": ["src/config"],
       "@modules/*": ["src/modules/*"],
       "@types": ["src/types"],
-      "@filter": ["src/common/filter"],
       "@enums": ["src/enums"],
       "@constants": ["src/constants"],
       "@decorators": ["src/decorators"],
-      // "@middlewares": ["src/common/middlewares"],
-      // "@shared": ["src/shared"],
-      // "@log": ["src/common/log"],
       "@*": ["src/*"]
     }
   }
