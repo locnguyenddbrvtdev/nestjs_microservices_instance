@@ -1,7 +1,7 @@
 export enum SERVICE_LIST {
   USER = 'USER',
   EMPLOYE = 'EMPLOYE',
-  CUSTOMER = ' CUSTOMER',
+  CUSTOMER = 'CUSTOMER',
   MAILER = 'MAILER',
   ADMIN = 'ADMIN',
 }

@@ -6,6 +6,7 @@ import { Request, Response, NextFunction, json, urlencoded } from 'express';
 import { AppModule } from '@app.module';
 import { AppConfigService } from '@modules/config/config.service';
 import { swaggerConfig } from '@config';
+import { Transport, TcpOptions } from '@nestjs/microservices';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestApplication>(AppModule);
@@ -14,6 +15,8 @@ async function bootstrap() {
   const appConfigService = app.get(AppConfigService);
 
   const thisHTTPPort = appConfigService.getThisHTTPPort();
+  const thisTCPPort = appConfigService.getThisTCPPort();
+  const thisService = appConfigService.thisService();
 
   app.use((req: Request, res: Response, next: NextFunction) => {
     res.removeHeader('x-powered-by');
@@ -35,9 +38,18 @@ async function bootstrap() {
   app.setBaseViewsDir(join(__dirname, '..', 'src', 'views'));
   app.setViewEngine('hbs');
   swaggerConfig(app);
-  await app.listen(thisHTTPPort);
-  console.log(
-    `${appConfigService.thisService()}_HTTP Server listen on ${thisHTTPPort}`,
-  );
+
+  app.connectMicroservice({
+    // name: thisService.toLowerCase(),
+    transport: Transport.TCP,
+    options: { host: '0.0.0.0', port: thisTCPPort },
+  } as TcpOptions);
+
+  await app
+    .startAllMicroservices()
+    .then(() => console.log(`${thisService}_TCP listen on ${thisTCPPort}`));
+  await app
+    .listen(thisHTTPPort)
+    .then(() => console.log(`${thisService}_HTTP listen on ${thisHTTPPort}`));
 }
 bootstrap();
