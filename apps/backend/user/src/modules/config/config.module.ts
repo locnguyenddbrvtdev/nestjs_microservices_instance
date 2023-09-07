@@ -4,6 +4,7 @@ import { AppConfigService } from './config.service';
 import { APP_GUARD } from '@nestjs/core';
 import { GlobalAuthGaurd } from '@common/guard/global.guard';
 import { JwtModule } from '@nestjs/jwt';
+import { MongooseModule } from '@nestjs/mongoose';
 
 const envFilePath = `.env.${process.env.NODE_ENV ?? 'development'}`;
 
@@ -20,6 +21,21 @@ const envFilePath = `.env.${process.env.NODE_ENV ?? 'development'}`;
       },
     }),
     JwtModule.register({ global: true }),
+    MongooseModule.forRootAsync({
+      useFactory: async () => ({
+        uri: process.env.DATABASE_URL + process.env.DATABASE_NAME,
+      }),
+    }),
+    MongooseModule.forFeature([
+      // {
+      //   name: UserInfor.name,
+      //   schema: UserInforSchema,
+      // },
+      // {
+      //   name: UserAccount.name,
+      //   schema: UserAccountSchema,
+      // },
+    ]),
   ],
   providers: [
     AppConfigService,

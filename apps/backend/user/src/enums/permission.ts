@@ -1,0 +1,5 @@
+export enum BUSINESSPERMISSION {
+  ONLY_READ = 'ONLY_READ',
+  OWNER = 'OWNER',
+  MANAGER = 'MANAGER',
+}
